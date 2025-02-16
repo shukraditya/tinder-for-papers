@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PaperCard from "./PaperCard";
 
 const papers = [
@@ -14,16 +14,40 @@ const papers = [
 
 const SwipeDeck = () => {
   const [index, setIndex] = useState(0);
+  const [keySwipeDirection, setKeySwipeDirection] = useState(null); //store the dirn of keypress
 
   const handleSwipe = (direction, paper) => {
     console.log(`Swiped ${direction} on ${paper.title}`);
-    setIndex(index + 1);
+    setKeySwipeDirection(direction);
+
+    setTimeout(() => {
+      setIndex((prevIndex) => prevIndex + 1);
+      setKeySwipeDirection(null);
+    }, 300);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (index < papers.length) {
+        if (event.key === "ArrowRight") handleSwipe("right", papers[index]);
+        if (event.key === "ArrowLeft") handleSwipe("left", papers[index]);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [index]);
+
 
   return (
     <div className="flex justify-center items-center h-screen">
       {index < papers.length ? (
-        <PaperCard paper={papers[index]} onSwipe={handleSwipe} />
+        <PaperCard
+          key={papers[index].id} // Force remount on new paper
+          paper={papers[index]}
+          onSwipe={handleSwipe}
+          keySwipeDirection={keySwipeDirection}
+        />
       ) : (
         <p className="text-xl font-bold text-black">No more papers!</p>
       )}

@@ -1,7 +1,7 @@
 import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
+import { useLayoutEffect, useEffect } from "react";
 
-const PaperCard = ({ paper, onSwipe }) => {
+const PaperCard = ({ paper, onSwipe, keySwipeDirection }) => {
   const controls = useAnimation();
 
   const handleDragEnd = (event, info) => {
@@ -14,19 +14,28 @@ const PaperCard = ({ paper, onSwipe }) => {
     }
   };
 
-  useEffect(() => {
-    controls.start({ x: 0 });
+  useEffect(() => {//current paper
+    if (keySwipeDirection === "right") {
+      controls.start({ x: 300, opacity: 0, transition: { type: "tween", duration: 0.3 } });
+    } else if (keySwipeDirection === "left") {
+      controls.start({ x: -300, opacity: 0, transition: { type: "tween", duration: 0.3 } });
+    }
+  }, [keySwipeDirection, controls]);
+
+  useLayoutEffect(() => {
+    controls.set({ x: 0, opacity: 1 });
   }, [paper, controls]);
 
   return (
     <motion.div
+      initial={{ x: 0, opacity: 1 }}
       className="w-96 h-96 bg-white shadow-lg rounded-xl p-4"
       drag="x"
-      dragConstraints={{ left: 20, right: -20 }} 
-      dragElastic={0.2} // Adds a bit of stretch effect
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.3}
       onDragEnd={handleDragEnd}
       animate={controls}
-      whileTap={{ scale: 1.02 }} 
+      whileTap={{ scale: 1.05 }}
     >
       <h2 className="text-xl font-bold">{paper.title}</h2>
       <p className="text-sm text-gray-600">{paper.abstract}</p>
