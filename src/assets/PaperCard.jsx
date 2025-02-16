@@ -37,7 +37,7 @@ const PaperCard = ({ paper, onSwipe, keySwipeDirection }) => {
       animate={controls}
       whileTap={{ scale: 1.05 }}
     >
-      <h2 className="text-xl font-bold">{paper.title}</h2>
+      <h2 className="text-xl text-black font-bold">{paper.title}</h2>
       <p className="text-sm text-gray-600">{paper.abstract}</p>
     </motion.div>
   );
