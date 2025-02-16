@@ -1,18 +1,35 @@
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
 
 const PaperCard = ({ paper, onSwipe }) => {
+  const controls = useAnimation();
+
+  const handleDragEnd = (event, info) => {
+    if (info.offset.x > 150) {
+      onSwipe("right", paper);
+    } else if (info.offset.x < -150) {
+      onSwipe("left", paper);
+    } else {
+      controls.start({ x: 0, transition: { type: "spring", stiffness: 300 } });
+    }
+  };
+
+  useEffect(() => {
+    controls.start({ x: 0 });
+  }, [paper, controls]);
+
   return (
     <motion.div
       className="w-96 h-96 bg-white shadow-lg rounded-xl p-4"
       drag="x"
-      dragConstraints={{ left: -100, right: 100 }}
-      onDragEnd={(event, info) => {
-        if (info.offset.x > 100) onSwipe("right", paper);
-        if (info.offset.x < -100) onSwipe("left", paper);
-      }}
+      dragConstraints={{ left: 20, right: -20 }} 
+      dragElastic={0.2} // Adds a bit of stretch effect
+      onDragEnd={handleDragEnd}
+      animate={controls}
+      whileTap={{ scale: 1.02 }} 
     >
       <h2 className="text-xl font-bold">{paper.title}</h2>
-      <p className="text-lg text-gray-600">{paper.abstract}</p>
+      <p className="text-sm text-gray-600">{paper.abstract}</p>
     </motion.div>
   );
 };

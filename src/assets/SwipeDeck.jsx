@@ -3,12 +3,12 @@ import PaperCard from "./PaperCard";
 
 const papers = [
   { id: 1, title: "Deep Learning in Healthcare", abstract: "An overview of DL applications..." },
-  { id: 2, title: "New12", abstract: "An overview of DL applications..." },
-  { id: 3, title: "New13", abstract: "An overview of DL applications..." },
-  { id: 4, title: "New14", abstract: "An overview of DL applications..." },
-  { id: 5, title: "new15", abstract: "An overview of DL applications..." },
-  { id: 6, title: "New16", abstract: "An overview of DL applications..." },
-  { id: 7, title: "New17", abstract: "An overview of DL applications..." },
+  { id: 2, title: "New12", abstract: "New12" },
+  { id: 3, title: "New13", abstract: "New13" },
+  { id: 4, title: "New14", abstract: "New14" },
+  { id: 5, title: "new15", abstract: "New15" },
+  { id: 6, title: "New16", abstract: "New16" },
+  { id: 7, title: "New17", abstract: "New17" },
   { id: 8, title: "Quantum Computing for AI", abstract: "Exploring quantum AI paradigms..." },
 ];
 
@@ -25,7 +25,7 @@ const SwipeDeck = () => {
       {index < papers.length ? (
         <PaperCard paper={papers[index]} onSwipe={handleSwipe} />
       ) : (
-        <p className="text-xl font-bold color-black">No more papers!</p>
+        <p className="text-xl font-bold text-black">No more papers!</p>
       )}
     </div>
   );
